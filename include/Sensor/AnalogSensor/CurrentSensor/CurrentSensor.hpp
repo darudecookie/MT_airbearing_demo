@@ -1,3 +1,4 @@
+#pragma once
 
 #include <cstdint>
 
@@ -5,7 +6,6 @@
 
 namespace sensor
 {
-
     class CurrentSensor : public _AbstractAnalogSensor
     {
     public:
