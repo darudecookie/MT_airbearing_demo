@@ -3,6 +3,9 @@
 
 #include "CommunicationHandler/CommunicationHandler.hpp"
 
+#include <typeinfo>
+#include <type_traits>
+
 #include <WiFi.h>
 #include <esp_wifi.h>
 
@@ -12,7 +15,8 @@ namespace comm_handle
                                                const uint16_t port_num,
                                                const uint8_t max_clients,
                                                const uint64_t default_telem_bitmask) noexcept : _wifi_server(IPAddress(address.data()), port_num, max_clients),
-                                                                                                _port_num(port_num)
+                                                                                                _port_num(port_num),
+                                                                                                _target_update(sys_st::possible_st::deactivated)
     {
         this->_telem_snapshot._telem_bitmask = default_telem_bitmask;
     }
@@ -71,20 +75,25 @@ namespace comm_handle
                 this->_websocket_client.write(reinterpret_cast<uint8_t *>(this->_telem_snapshot._timestamp), sizeof(this->_telem_snapshot._timestamp));
                 break;
             case msg_codes::read_quat:
-                this->_websocket_client.write(reinterpret_cast<uint8_t *>(this->_telem_snapshot._quat), sizeof());
-                break;
+            {
+                const std::array<float, 4> quat_data = {static_cast<float>(this->_telem_snapshot._quat.w()),
+                                                        static_cast<float>(this->_telem_snapshot._quat.x()),
+                                                        static_cast<float>(this->_telem_snapshot._quat.y()),
+                                                        static_cast<float>(this->_telem_snapshot._quat.z())};
+                this->_websocket_client.write(reinterpret_cast<const uint8_t *>(quat_data.data()), sizeof(quat_data));
+            }
+            break;
             case msg_codes::read_ang_vel:
-                this->_websocket_client.write(reinterpret_cast<uint8_t *>(this->_telem_snapshot._ang_vel), sizeof());
+                this->_websocket_client.write(reinterpret_cast<uint8_t *>(&this->_telem_snapshot._ang_vel[0]), sizeof(this->_telem_snapshot._ang_vel));
                 break;
             case msg_codes::read_ang_acc:
-                std::
-                this->_websocket_client.write(reinterpret_cast<uint8_t *>(this->_telem_snapshot._ang_acc.), sizeof());
+                this->_websocket_client.write(reinterpret_cast<const uint8_t *>(&this->_telem_snapshot._ang_acc[0]), sizeof(this->_telem_snapshot._ang_acc));
                 break;
             case msg_codes::read_B:
-                this->_websocket_client.write(reinterpret_cast<uint8_t *>(this->_telem_snapshot._B_val.data()), sizeof(this->_telem_snapshot._B_val));
+                this->_websocket_client.write(reinterpret_cast<uint8_t *>(&this->_telem_snapshot._B_val[0]), sizeof(this->_telem_snapshot._B_val));
                 break;
             case msg_codes::read_B_dot:
-                this->_websocket_client.write(reinterpret_cast<uint8_t *>(this->_telem_snapshot._B_dot.data()), sizeof(this->_telem_snapshot._B_dot));
+                this->_websocket_client.write(reinterpret_cast<uint8_t *>(&this->_telem_snapshot._B_dot[0]), sizeof(this->_telem_snapshot._B_dot));
                 break;
             case msg_codes::read_MT_temp:
                 this->_websocket_client.write(reinterpret_cast<uint8_t *>(this->_telem_snapshot._MT_temps.data()), sizeof(this->_telem_snapshot._MT_temps));
@@ -92,11 +101,13 @@ namespace comm_handle
             case msg_codes::read_MT_current:
                 this->_websocket_client.write(reinterpret_cast<uint8_t *>(this->_telem_snapshot._MT_currents.data()), sizeof(this->_telem_snapshot._MT_currents));
                 break;
+            default:
+                break;
             }
         }
     }
 
-    TargetUpdate CommunicationHandler::get_target_update() noexcept
+sys_st::    SystemTarget CommunicationHandler::get_target_update() noexcept
     {
         this->_new_target_update = false;
         return this->_target_update;

@@ -14,14 +14,6 @@
 
 namespace comm_handle
 {
-    struct TargetUpdate
-    {
-        sys_st::possible_st _target_type = sys_st::possible_st::deactivated;
-        std::array<float, 4> _data = {};
-
-        imu::Quaternion get_quat_data() const noexcept { return imu::Quaternion(this->_data[0], this->_data[1], this->_data[2], this->_data[3]); }
-        imu::Vector<3> get_vector_data() const noexcept { return imu::Vector<3>(this->_data[0], this->_data[1], this->_data[2]); }
-    };
 
     struct DataPackage
     {
@@ -51,7 +43,7 @@ namespace comm_handle
         const uint16_t _port_num;
         WiFiClient _websocket_client;
 
-        TargetUpdate _target_update = {};
+        sys_st::SystemTarget _target_update;
         bool _new_target_update = false;
 
         DataPackage _telem_snapshot = {};
@@ -71,7 +63,8 @@ namespace comm_handle
         void exchange_data() noexcept;
 
         bool new_target_update() const noexcept { return this->_new_target_update; }
-        TargetUpdate get_target_update() noexcept;
+        sys_st::SystemTarget observe_target_update() const noexcept { return this->_target_update; }
+        sys_st::SystemTarget get_target_update() noexcept;
 
         bool should_update_telem() const noexcept { return (this->_sent_telem_bitmask == this->_telem_snapshot._telem_bitmask); }
         void update_telem(const uint32_t current_timestamp,

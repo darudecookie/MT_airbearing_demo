@@ -8,7 +8,7 @@
 #include <imumaths.h>
 
 #include "SysStatemachine/SysStatemachine.hpp"
-//#include "CommunicationHandler/CommunicationHandler.hpp"
+#include "CommunicationHandler/CommunicationHandler.hpp"
 
 #include "GNCMath/Controllers/BDotController/BDotController.hpp"
 #include "GNCMath/Controllers/OmegaSlewController/OmegaSlewController.hpp"
@@ -93,7 +93,7 @@ namespace loop_objs
 
 namespace io_objs
 {
-   // static comm_handle::CommunicationHandler comm_handler(io_params::WIFE_SERVER_IP_ADDR, io_params::WIFI_SERVER_PORT_NUM, io_params::WIFI_SERVER_MAX_CLIENTS);
+    static comm_handle::CommunicationHandler comm_handler(io_params::WIFE_SERVER_IP_ADDR, io_params::WIFI_SERVER_PORT_NUM, io_params::WIFI_SERVER_MAX_CLIENTS);
 
     static Adafruit_BNO055 BNO055_IMU;
 

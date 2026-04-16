@@ -94,7 +94,7 @@ void task_funcs::update_IMU_data(const uint32_t dt_ms) noexcept
 void task_funcs::control_magnetorquers() noexcept
 {
     const auto curr_st = loop_objs::sys_controller.get_state();
-    if (curr_st == loop_objs::sys_controller.get_state())
+    if (curr_st == sys_st::possible_st::deactivated)
     {
         for (auto &actuator : io_objs::magnetorquers)
         {
@@ -112,10 +112,10 @@ void task_funcs::control_magnetorquers() noexcept
             desired_torque = loop_objs::b_dot_conn.compute_torque(curr_att::curr_B_dot);
             break;
         case sys_st::possible_st::omega_slew_control:
-            desired_torque = loop_objs::omega_slew_conn.compute_torque(loop_objs::system_target.get_vector_data(), curr_att::curr_ang_vel, curr_att::curr_ang_acc, micros());
+            desired_torque = loop_objs::omega_slew_conn.compute_torque(loop_objs::sys_controller.get_target_vec(), curr_att::curr_ang_vel, curr_att::curr_ang_acc, micros());
             break;
         case sys_st::possible_st::quat_point_control:
-            desired_torque = loop_objs::quat_point_conn.compute_torque(loop_objs::system_target.get_quat_data(), curr_att::curr_attitude, curr_att::curr_ang_vel);
+            desired_torque = loop_objs::quat_point_conn.compute_torque(loop_objs::sys_controller.get_target_quat(), curr_att::curr_attitude, curr_att::curr_ang_vel);
             break;
         default:
             break;
@@ -138,8 +138,7 @@ void task_funcs::write_comm(const uint32_t current_time_ms) noexcept
 
     if (io_objs::comm_handler.new_target_update())
     {
-        loop_objs::system_target = io_objs::comm_handler.get_target_update();
-        loop_objs::sys_controller.transition_st(loop_objs::system_target._target_type);
+        loop_objs::sys_controller.update_target(io_objs::comm_handler.get_target_update());
     }
 }
 void task_funcs::update_LEDs() noexcept {}
