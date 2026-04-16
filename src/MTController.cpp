@@ -15,8 +15,8 @@ namespace mt_conn
                                const bool negative_dc) noexcept : _in1(in1),
                                                                   _in2(in2),
                                                                   _max_dutycycle(std::abs(max_dutycycle)),
-                                                                  _st_machine(st_machine),
-                                                                  _negative_dc(negative_dc)
+                                                                  _negative_dc(negative_dc),
+                                                                  _st_machine(st_machine)
     {
         pinMode(this->_in1, OUTPUT);
         pinMode(this->_in2, OUTPUT);
