@@ -107,7 +107,7 @@ namespace comm_handle
         }
     }
 
-sys_st::    SystemTarget CommunicationHandler::get_target_update() noexcept
+    sys_st::SystemTarget CommunicationHandler::get_target_update() noexcept
     {
         this->_new_target_update = false;
         return this->_target_update;

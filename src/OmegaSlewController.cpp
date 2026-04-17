@@ -16,9 +16,9 @@ namespace gnc_math
         }
 
         imu::Vector<3> OmegaSlewController::compute_torque(const imu::Vector<3> &omega_setpoint,
-                                                                      const imu::Vector<3> &current_omega,
-                                                                      const imu::Vector<3> &alpha,
-                                                                      const uint64_t current_time_us)
+                                                           const imu::Vector<3> &current_omega,
+                                                           const imu::Vector<3> &alpha,
+                                                           const uint64_t current_time_us)
         {
             const imu::Vector<3> omega_error = omega_setpoint - current_omega;
 

@@ -12,22 +12,16 @@ if something looks weird i probably wrote it drunk
 
 void setup()
 {
-    //    io_objs::comm_handler.report_error(io_objs::comm_handler.init_wifi(io_params::WIFI_NETWORK_NAME, io_params::WIFI_NETWORK_PASSWORD), millis());
+    io_objs::comm_handler.report_error(io_objs::comm_handler.init_wifi(io_params::WIFI_NETWORK_NAME, io_params::WIFI_NETWORK_PASSWORD), millis());
 
-    // while (true)
+    while (true)
     {
-        //      io_objs::comm_handler.report_error(io_objs::comm_handler.attempt_client_conn(), millis());
+        io_objs::comm_handler.report_error(io_objs::comm_handler.attempt_client_conn(), millis());
         delay(500);
     }
-    Serial.begin(115200);
     if (io_objs::BNO055_IMU.begin() == false)
     {
-        Serial.println("meow");
-        // io_objs::comm_handler.report_error(comm_handle::error_codes::imu_init_fail, millis());
-    }
-    while (1)
-    {
-        Serial.println(io_objs::BNO055_IMU.getQuat().w());
+        io_objs::comm_handler.report_error(comm_handle::error_codes::imu_init_fail, millis());
     }
 }
 
@@ -141,7 +135,9 @@ void task_funcs::write_comm(const uint32_t current_time_ms) noexcept
         loop_objs::sys_controller.update_target(io_objs::comm_handler.get_target_update());
     }
 }
-void task_funcs::update_LEDs() noexcept {}
+void task_funcs::update_LEDs() noexcept
+{
+}
 
 imu::Vector<3> util_funcs::vector_deriv(const imu::Vector<3> &curr, const imu::Vector<3> &prev, const uint32_t dt_ms) noexcept
 {

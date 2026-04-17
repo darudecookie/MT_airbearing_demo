@@ -78,7 +78,7 @@ namespace curr_att
 namespace loop_objs
 {
     static sys_st::SysStateMachine sys_controller(sys_st::possible_st::deactivated);
-    //static comm_handle::TargetUpdate system_target;
+    // static comm_handle::TargetUpdate system_target;
 
     static gnc_math::conn::BDotController b_dot_conn(sys_params::B_DOT_CONN_kP);
     static gnc_math::conn::OmegaSlewController omega_slew_conn(sys_params::SLEW_CONN_kP, sys_params::SLEW_CONN_kI, sys_params::SLEW_CONN_kD);
