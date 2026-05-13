@@ -12,8 +12,8 @@ namespace sys_st
     enum class possible_st : uint8_t
     {
         deactivated,
-        direct_B_control,
-        b_dot_control,
+        MT_dc_control,
+        B_dot_control,
         omega_slew_control,
         quat_point_control
     };

@@ -229,7 +229,7 @@
       "no_connect_dangling": "warning",
       "pin_not_connected": "error",
       "pin_not_driven": "error",
-      "pin_to_pin": "error",
+      "pin_to_pin": "warning",
       "power_pin_not_driven": "error",
       "same_local_global_label": "warning",
       "similar_label_and_power": "warning",
@@ -239,6 +239,7 @@
       "single_global_label": "ignore",
       "unannotated": "error",
       "unconnected_wire_endpoint": "warning",
+      "undefined_netclass": "error",
       "unit_value_mismatch": "error",
       "unresolved_variable": "error",
       "wire_dangling": "error"
@@ -249,7 +250,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "mainboard_schm_only.kicad_pro",
+    "filename": "mt_mainboard.kicad_pro",
     "version": 3
   },
   "net_settings": {
@@ -409,20 +410,20 @@
   },
   "sheets": [
     [
-      "b3e99fe4-f7c9-41ab-a32c-73e2e8a5e296",
+      "d37a9f2a-b5df-41c1-8747-b34cc401cfa7",
       "Root"
     ],
     [
-      "d523614b-c083-42b2-a422-2ea896df0cc4",
-      "single_mt_driver_0"
+      "9e5e35d3-cee3-456f-a9d4-ece9005cc618",
+      "mt_0_control"
     ],
     [
-      "18e50000-f817-4731-886e-f299e7d7a7e0",
-      "single_mt_driver_1"
+      "d7a4eb64-e328-4a64-9ea1-35e7b7884b31",
+      "mt_1_control"
     ],
     [
-      "91e4565b-96dd-41ae-bb76-7de60bd3cf39",
-      "single_mt_driver_2"
+      "e0c88271-9244-462f-83f4-9b82fa73fd69",
+      "mt_2_control"
     ]
   ],
   "text_variables": {}

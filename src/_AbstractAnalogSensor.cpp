@@ -14,7 +14,6 @@ namespace sensor
     double _AbstractAnalogSensor::read() const noexcept
     {
 
-        return (_AbstractAnalogSensor::ADC_MAX_VOLTS * this->_voltage_scaler * static_cast<double>(analogRead(this->_sensor_pin))) /
-               static_cast<double>(4095);
+        return this->_voltage_scaler * (_AbstractAnalogSensor::ADC_MAX_VOLTS * static_cast<float>(analogRead(this->_sensor_pin)) / 4095.0);
     }
 } // namespace sensor

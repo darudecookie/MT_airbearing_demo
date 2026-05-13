@@ -28,24 +28,29 @@ namespace io_params
     static constexpr uint32_t WIFI_SERVER_PORT_NUM = 10000;
 
     // MUST BE PWM PINS
-    static constexpr std::array<std::array<uint8_t, 2>, NUM_MAGNETORQUERS> MT_CONTROL_PINS = {std::array<uint8_t, 2>{2, 4},
-                                                                                              std::array<uint8_t, 2>{16, 17},
-                                                                                              std::array<uint8_t, 2>{5, 18}};
+    static constexpr std::array<std::array<uint8_t, 2>, NUM_MAGNETORQUERS> MT_CONTROL_PINS = {std::array<uint8_t, 2>{26, 27},
+                                                                                              std::array<uint8_t, 2>{14, 12},
+                                                                                              std::array<uint8_t, 2>{2, 15}};
 
     // MUST BE ANALOG PINS
     static constexpr double TEMP_SENS_VOLTS_PER_DEG = .010; // https://www.analog.com/media/en/technical-documentation/data-sheets/TMP35_36_37.pdf: 10mV / *C
-    static constexpr std::array<uint8_t, NUM_MAGNETORQUERS> TEMP_SENSOR_PINS = {13, 12, 14};
+    static constexpr std::array<uint8_t, NUM_MAGNETORQUERS> TEMP_SENSOR_PINS = {35, 34, 39};
 
     static constexpr double CURRENT_SENS_VOLTS_PER_AMP = 1; // https://www.adafruit.com/product/1164: 1V / A
-    static constexpr std::array<uint8_t, NUM_MAGNETORQUERS> CURRENT_SENSOR_PINS = {27, 26, 25};
+    static constexpr std::array<uint8_t, NUM_MAGNETORQUERS> CURRENT_SENSOR_PINS = {32, 33, 25};
+
+    static constexpr std::array<uint8_t, 4> LED_PINS = {18, 19, 17, 5}; //,0,0 };//r o y g b v
 
 } // namespace io_params
 
 namespace sys_params
 {
-    static constexpr std::array<float, NUM_MAGNETORQUERS> MT_CURRENT_LIM_A = {0.182, 0.182, 0.182},
-                                                          MT_VOLTAGE_LIM_V = {12, 12, 12};
     static constexpr float SUPPLY_VOLTAGE_V = 9;
+
+    static constexpr std::array<float, NUM_MAGNETORQUERS> MT_CURRENT_LIM_A = {0.226, 0.226, 0.228}, // awg: 28, 28, 
+                                                          MT_VOLTAGE_LIM_V = {12, 12, 12};
+    static constexpr double MAX_MT_TEMP_C = 50;
+
 
     static constexpr double B_DOT_CONN_kP = 1;
 

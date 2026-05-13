@@ -21,10 +21,11 @@ namespace comm_handle
         uint64_t _telem_bitmask = 0;
 
         uint32_t _timestamp = 0;
-
+        sys_st::possible_st _sys_st = sys_st::possible_st::deactivated;
         imu::Quaternion _quat = {};
         imu::Vector<3> _ang_vel = {},
                        _ang_acc = {},
+                       _MT_dc = {},
                        _B_val = {},
                        _B_dot = {};
         std::array<float, 3> _MT_temps = {},
@@ -48,6 +49,9 @@ namespace comm_handle
 
         DataPackage _telem_snapshot = {};
         uint64_t _sent_telem_bitmask = 0;
+
+        void read_data() noexcept;
+        void write_telem() noexcept;
 
     public:
         CommunicationHandler(const std::array<uint8_t, 4> &address, const uint16_t port_num, const uint8_t max_clients, const uint64_t default_telem_bitmask = UINT64_MAX) noexcept;

@@ -51,7 +51,10 @@ namespace comm_handle
     void CommunicationHandler::report_error(const comm_handle::error_codes e, const uint32_t timestamp) noexcept
     {
     }
-    void CommunicationHandler::exchange_data() noexcept
+    void CommunicationHandler::read_data() noexcept
+    {
+    }
+    void CommunicationHandler::write_telem() noexcept
     {
         if (!this->should_update_telem())
         {
@@ -64,7 +67,12 @@ namespace comm_handle
                 if (unwritten & (uint64_t(1) << i))
                 {
                     to_write_code = bitmask_index_to_telem(i);
+                    break;
                 }
+            }
+            if (to_write_code == msg_codes::ping)
+            {
+                _sent_telem_bitmask = this->_telem_snapshot._telem_bitmask;
             }
 
             this->_websocket_client.write(MSG_START_WORD.data(), MSG_START_WORD.size());
@@ -73,6 +81,8 @@ namespace comm_handle
             {
             case msg_codes::read_timestamp:
                 this->_websocket_client.write(reinterpret_cast<uint8_t *>(this->_telem_snapshot._timestamp), sizeof(this->_telem_snapshot._timestamp));
+                break;
+            case msg_codes::read_sys_st:
                 break;
             case msg_codes::read_quat:
             {
@@ -86,8 +96,11 @@ namespace comm_handle
             case msg_codes::read_ang_vel:
                 this->_websocket_client.write(reinterpret_cast<uint8_t *>(&this->_telem_snapshot._ang_vel[0]), sizeof(this->_telem_snapshot._ang_vel));
                 break;
+
             case msg_codes::read_ang_acc:
                 this->_websocket_client.write(reinterpret_cast<const uint8_t *>(&this->_telem_snapshot._ang_acc[0]), sizeof(this->_telem_snapshot._ang_acc));
+                break;
+            case msg_codes::read_MT_dc:
                 break;
             case msg_codes::read_B:
                 this->_websocket_client.write(reinterpret_cast<uint8_t *>(&this->_telem_snapshot._B_val[0]), sizeof(this->_telem_snapshot._B_val));
@@ -105,6 +118,9 @@ namespace comm_handle
                 break;
             }
         }
+    }
+    void CommunicationHandler::exchange_data() noexcept
+    {
     }
 
     sys_st::SystemTarget CommunicationHandler::get_target_update() noexcept
